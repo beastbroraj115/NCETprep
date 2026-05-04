@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCET Complete Database — 2025–26</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0c10;
+    --surface: #13141a;
+    --surface2: #1c1e27;
+    --border: #2a2d3a;
+    --accent: #00e5a0;
+    --accent2: #ff6b35;
+    --accent3: #a78bfa;
+    --text: #e8eaf0;
+    --muted: #7a7f96;
+    --tag-bg: #1e2235;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .container { position:relative; z-index:1; max-width:1100px; margin:0 auto; padding:24px 16px 60px; }
+
+  /* Header */
+  header { padding: 32px 0 24px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .header-top { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .logo-area h1 {
+    font-family:'Syne', sans-serif;
+    font-size:clamp(22px,5vw,38px);
+    font-weight:800;
+    letter-spacing:-1px;
+    color:#fff;
+  }
+  .logo-area h1 span { color: var(--accent); }
+  .logo-area p { font-size:11px; color:var(--muted); margin-top:4px; letter-spacing:2px; text-transform:uppercase; }
+  .badge {
+    background: linear-gradient(135deg, var(--accent), #00b87a);
+    color:#000;
+    font-family:'Syne',sans-serif;
+    font-weight:700;
+    font-size:11px;
+    padding:6px 14px;
+    border-radius:4px;
+    letter-spacing:1px;
+    white-space:nowrap;
+  }
+
+  /* Nav Tabs */
+  .tabs {
+    display:flex;
+    gap:4px;
+    overflow-x:auto;
+    margin-bottom:24px;
+    padding-bottom:2px;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab {
+    background: var(--surface);
+    border:1px solid var(--border);
+    color: var(--muted);
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    padding:8px 16px;
+    cursor:pointer;
+    border-radius:4px;
+    white-space:nowrap;
+    transition: all 0.2s;
+    letter-spacing:0.5px;
+  }
+  .tab:hover { border-color: var(--accent); color:var(--accent); }
+  .tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color:#000;
+    font-weight:700;
+  }
+
+  /* Section */
+  .section { display:none; animation: fadeIn 0.3s ease; }
+  .section.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius:8px;
+    padding:20px;
+    margin-bottom:16px;
+  }
+  .card-title {
+    font-family:'Syne',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    color:#fff;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .card-title .dot {
+    width:8px; height:8px; border-radius:50%;
+    background: var(--accent);
+    display:inline-block;
+    flex-shrink:0;
+  }
+  .card-title .dot.orange { background: var(--accent2); }
+  .card-title .dot.purple { background: var(--accent3); }
+
+  /* Grid */
+  .grid2 { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:16px; }
+  .grid3 { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:16px; }
+
+  /* Stat box */
+  .stat-box {
+    background: var(--surface2);
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:14px 16px;
+  }
+  .stat-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; }
+  .stat-value { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:var(--accent); }
+  .stat-value.orange { color:var(--accent2); }
+  .stat-value.purple { color:var(--accent3); }
+  .stat-value.white { color:#fff; }
+  .stat-sub { font-size:10px; color:var(--muted); margin-top:3px; }
+
+  /* Table */
+  .tbl { width:100%; border-collapse:collapse; font-size:12px; }
+  .tbl th {
+    background: var(--surface2);
+    color: var(--muted);
+    font-weight:700;
+    letter-spacing:1px;
+    font-size:10px;
+    text-transform:uppercase;
+    padding:10px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+  }
+  .tbl td {
+    padding:10px 12px;
+    border-bottom:1px solid var(--border);
+    color: var(--text);
+    vertical-align:top;
+  }
+  .tbl tr:last-child td { border-bottom:none; }
+  .tbl tr:hover td { background: var(--surface2); }
+
+  /* Tags */
+  .tag {
+    display:inline-block;
+    background: var(--tag-bg);
+    border:1px solid var(--border);
+    border-radius:3px;
+    font-size:10px;
+    padding:2px 8px;
+    color: var(--muted);
+    margin:2px 2px 2px 0;
+  }
+  .tag.green { background:#0d2e1f; border-color:#00e5a0; color:var(--accent); }
+  .tag.orange { background:#2e1a0d; border-color:#ff6b35; color:var(--accent2); }
+  .tag.purple { background:#1e1a2e; border-color:#a78bfa; color:var(--accent3); }
+  .tag.red { background:#2e0d0d; border-color:#ff4757; color:#ff4757; }
+
+  /* Progress bar */
+  .bar-wrap { background: var(--surface2); border-radius:3px; height:6px; overflow:hidden; margin-top:6px; }
+  .bar-fill { height:100%; border-radius:3px; background: var(--accent); transition:width 0.8s ease; }
+  .bar-fill.orange { background: var(--accent2); }
+  .bar-fill.purple { background: var(--accent3); }
+
+  /* Timeline */
+  .timeline { position:relative; padding-left:20px; }
+  .timeline::before { content:''; position:absolute; left:6px; top:0; bottom:0; width:1px; background: var(--border); }
+  .tl-item { position:relative; margin-bottom:16px; }
+  .tl-item::before {
+    content:''; position:absolute; left:-17px; top:4px;
+    width:8px; height:8px; border-radius:50%;
+    background: var(--accent); border:2px solid var(--bg);
+  }
+  .tl-item.orange::before { background: var(--accent2); }
+  .tl-item.purple::before { background: var(--accent3); }
+  .tl-date { font-size:10px; color:var(--muted); letter-spacing:1px; margin-bottom:2px; }
+  .tl-text { font-size:12px; color:var(--text); }
+
+  /* Score highlight */
+  .score-big {
+    font-family:'Syne',sans-serif;
+    font-size:clamp(32px,8vw,56px);
+    font-weight:800;
+    color: var(--accent);
+    line-height:1;
+  }
+
+  /* Alert box */
+  .alert {
+    border-left:3px solid var(--accent);
+    background: #0d2e1f;
+    border-radius:0 6px 6px 0;
+    padding:12px 16px;
+    font-size:12px;
+    color:var(--text);
+    margin-bottom:12px;
+  }
+  .alert.orange { border-color: var(--accent2); background:#2e1a0d; }
+  .alert.purple { border-color: var(--accent3); background:#1e1a2e; }
+
+  /* Rank card */
+  .rank-row { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+  .rank-row:last-child { border-bottom:none; }
+  .rank-num { font-family:'Syne',sans-serif; font-weight:800; font-size:18px; color: var(--muted); min-width:28px; }
+  .rank-num.first { color:var(--accent); }
+  .rank-detail { flex:1; }
+  .rank-name { font-size:13px; font-weight:700; color:#fff; margin-bottom:2px; }
+  .rank-meta { font-size:11px; color:var(--muted); }
+  .rank-badge { font-size:11px; }
+
+  /* Scroll hint */
+  .scroll-hint { font-size:10px; color:var(--muted); text-align:center; padding:8px; }
+
+  @media(max-width:600px) {
+    .grid2, .grid3 { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-top">
+      <div class="logo-area">
+        <h1>NCET <span>DATABASE</span></h1>
+        <p>Complete Prep Reference · 2025–26</p>
+      </div>
+      <div class="badge">BSc BEd · RIE · NTA</div>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="show('overview')">Overview</button>
+    <button class="tab" onclick="show('exam')">Exam Pattern</button>
+    <button class="tab" onclick="show('syllabus')">Syllabus</button>
+    <button class="tab" onclick="show('rie')">RIE Colleges</button>
+    <button class="tab" onclick="show('counselling')">Counselling</button>
+    <button class="tab" onclick="show('career')">Career Path</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="section active" id="overview">
+    <div class="grid3" style="margin-bottom:16px;">
+      <div class="stat-box"><div class="stat-label">Exam Full Form</div><div class="stat-value white" style="font-size:13px;margin-top:4px;">National Common Entrance Test</div></div>
+      <div class="stat-box"><div class="stat-label">Conducting Body</div><div class="stat-value white" style="font-size:14px;margin-top:4px;">NTA (National Testing Agency)</div></div>
+      <div class="stat-box"><div class="stat-label">Exam Year</div><div class="stat-value">2025</div><div class="stat-sub">For 2025–26 academic session</div></div>
+      <div class="stat-box"><div class="stat-label">Total Questions</div><div class="stat-value">180</div><div class="stat-sub">MCQ format</div></div>
+      <div class="stat-box"><div class="stat-label">Attemptable Questions</div><div class="stat-value orange">160</div><div class="stat-sub">Max you can attempt</div></div>
+      <div class="stat-box"><div class="stat-label">Total Marks</div><div class="stat-value">640</div><div class="stat-sub">4 marks per question</div></div>
+      <div class="stat-box"><div class="stat-label">Duration</div><div class="stat-value">3 hrs</div><div class="stat-sub">180 minutes</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>What is NCET?</div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.8;">
+        NCET is the national-level entrance exam for admission into <strong style="color:#fff">4-year integrated BSc BEd programs</strong> at Regional Institutes of Education (RIEs) and Central Universities. Conducted by NTA, it replaced individual RIE entrance tests. For science stream students (PCB), the relevant program is <strong style="color:var(--accent)">BSc BEd CBZ</strong> (Chemistry, Botany, Zoology).
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot orange"></span>Key Facts</div>
+      <div class="tbl-wrap" style="overflow-x:auto;">
+        <table class="tbl">
+          <tr><th>Parameter</th><th>Detail</th></tr>
+          <tr><td>Mode</td><td>Computer Based Test (CBT)</td></tr>
+          <tr><td>Language</td><td>English + Hindi (bilingual)</td></tr>
+          <tr><td>Negative Marking</td><td>–1 per wrong answer</td></tr>
+          <tr><td>Eligibility</td><td>Class 12 pass / appearing (PCM or PCB)</td></tr>
+          <tr><td>Age Limit</td><td>No upper age limit</td></tr>
+          <tr><td>Reservation</td><td>OBC: 27% | SC: 15% | ST: 7.5% | EWS: 10%</td></tr>
+          <tr><td>Program Duration</td><td>4 years (integrated BSc + BEd)</td></tr>
+          <tr><td>Seats (approx)</td><td>~30 per RIE per stream</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="alert">
+      💡 <strong>OBC Reservation tip:</strong> OBC reservation (27%) significantly reduces competition. CBZ program seats are limited (~30/RIE) so even a moderate general rank translates to a good OBC rank.
+    </div>
+  </div>
+
+  <!-- EXAM PATTERN -->
+  <div class="section" id="exam">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Section-wise Breakdown</div>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <tr><th>Section</th><th>Subject</th><th>Questions (Total)</th><th>Attemptable</th><th>Marks</th><th>Priority</th></tr>
+          <tr>
+            <td>Section I</td>
+            <td>Language I (Hindi)</td>
+            <td>40</td>
+            <td>35</td>
+            <td>140</td>
+            <td><span class="tag green">HIGH</span></td>
+          </tr>
+          <tr>
+            <td>Section II</td>
+            <td>Language II (English)</td>
+            <td>40</td>
+            <td>35</td>
+            <td>140</td>
+            <td><span class="tag green">HIGH</span></td>
+          </tr>
+          <tr>
+            <td>Section III</td>
+            <td>Domain Subject (Biology/PCM)</td>
+            <td>60</td>
+            <td>50</td>
+            <td>200</td>
+            <td><span class="tag green">HIGH</span></td>
+          </tr>
+          <tr>
+            <td>Section IV</td>
+            <td>Teaching Aptitude</td>
+            <td>40</td>
+            <td>40</td>
+            <td>160</td>
+            <td><span class="tag green">HIGH</span></td>
+          </tr>
+          <tr style="font-weight:700;">
+            <td colspan="2"><strong>TOTAL</strong></td>
+            <td><strong>180</strong></td>
+            <td><strong>160</strong></td>
+            <td><strong>640</strong></td>
+            <td>—</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>Marking Scheme</div>
+        <div class="stat-box" style="margin-bottom:8px;">
+          <div class="stat-label">Correct Answer</div>
+          <div class="stat-value">+4</div>
+        </div>
+        <div class="stat-box" style="margin-bottom:8px;">
+          <div class="stat-label">Wrong Answer</div>
+          <div class="stat-value orange">–1</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Unattempted</div>
+          <div class="stat-value white">0</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot orange"></span>Strategy Notes</div>
+        <div class="alert" style="margin-bottom:8px;">Focus: Domain Subject (Biology/PCM) = 200 marks. Highest weightage single section.</div>
+        <div class="alert orange" style="margin-bottom:8px;">Languages (Hindi + English) = 280 marks combined. Easiest marks if you're strong in both.</div>
+        <div class="alert purple">Teaching Aptitude = common sense + pedagogy basics. Don't ignore — it's 160 marks.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot purple"></span>Optimal Section Strategy (General Guidance)</div>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <tr><th>Section</th><th>Attemptable</th><th>Target Correct</th><th>Target Score</th><th>Tip</th></tr>
+          <tr><td>Hindi</td><td>35</td><td>28–30</td><td>112–120</td><td>Native language — aim high</td></tr>
+          <tr><td>English</td><td>35</td><td>25–28</td><td>100–112</td><td>Grammar + reading comprehension</td></tr>
+          <tr><td>Biology / Domain</td><td>50</td><td>35–42</td><td>140–168</td><td>Core subject — max focus</td></tr>
+          <tr><td>Teaching Aptitude</td><td>40</td><td>28–32</td><td>112–128</td><td>Pedagogy basics, NCF 2005</td></tr>
+          <tr style="font-weight:700;"><td><strong>Total Target</strong></td><td><strong>160</strong></td><td><strong>~116–132</strong></td><td><strong>~464–528</strong></td><td>Safe RIE admission zone</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYLLABUS -->
+  <div class="section" id="syllabus">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Biology (Section III) — 60 Questions (Attempt 50)</div>
+      <div class="grid2">
+        <div>
+          <p style="font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:1px;">CLASS 11 TOPICS</p>
+          <div class="tag">Diversity of Living Organisms</div>
+          <div class="tag">Cell Structure & Function</div>
+          <div class="tag">Plant Physiology</div>
+          <div class="tag">Human Physiology</div>
+          <div class="tag">Structural Organisation</div>
+          <div class="tag">Biomolecules</div>
+          <div class="tag">Cell Division</div>
+        </div>
+        <div>
+          <p style="font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:1px;">CLASS 12 TOPICS</p>
+          <div class="tag green">Reproduction</div>
+          <div class="tag green">Genetics & Evolution</div>
+          <div class="tag green">Biology in Human Welfare</div>
+          <div class="tag green">Biotechnology</div>
+          <div class="tag green">Ecology & Environment</div>
+          <div class="tag green">Microbes in Human Welfare</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="dot orange"></span>Hindi (Section I)</div>
+        <div class="tag">Apathit Gadyansh</div>
+        <div class="tag">Apathit Kavyansh</div>
+        <div class="tag">Vyakaran (Grammar)</div>
+        <div class="tag">Shabd Bhandar</div>
+        <div class="tag">Sandhi, Samas</div>
+        <div class="tag">Muhavare & Lokoktiyan</div>
+        <div class="tag">Ras, Alankar, Chhand</div>
+        <div class="tag">Sahitya Itihas</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot orange"></span>English (Section II)</div>
+        <div class="tag">Reading Comprehension</div>
+        <div class="tag">Grammar & Usage</div>
+        <div class="tag">Vocabulary</div>
+        <div class="tag">Sentence Correction</div>
+        <div class="tag">Fill in the Blanks</div>
+        <div class="tag">One-word Substitution</div>
+        <div class="tag">Idioms & Phrases</div>
+        <div class="tag">Literature basics</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot purple"></span>Teaching Aptitude (Section IV)</div>
+      <div class="grid2">
+        <div>
+          <div class="tag purple">Nature of Teaching</div>
+          <div class="tag purple">Learner & Learning</div>
+          <div class="tag purple">School & Society</div>
+          <div class="tag purple">Inclusive Education</div>
+        </div>
+        <div>
+          <div class="tag purple">Classroom Management</div>
+          <div class="tag purple">Assessment & Evaluation</div>
+          <div class="tag purple">Teaching Methods</div>
+          <div class="tag purple">Child Development</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- RIE COLLEGES -->
+  <div class="section" id="rie">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>5 RIEs Under NCERT</div>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <tr><th>#</th><th>RIE Location</th><th>State</th><th>Established</th><th>Notes</th></tr>
+          <tr>
+            <td>1</td>
+            <td>RIE Bhopal</td>
+            <td>Madhya Pradesh</td>
+            <td>1963</td>
+            <td>Central India, good infrastructure</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>RIE Mysore</td>
+            <td>Karnataka</td>
+            <td>1963</td>
+            <td>South India, strong reputation</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>RIE Bhubaneswar</td>
+            <td>Odisha</td>
+            <td>1963</td>
+            <td>East India</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>RIE Ajmer</td>
+            <td>Rajasthan</td>
+            <td>1963</td>
+            <td>North India</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>RIE Shillong</td>
+            <td>Meghalaya</td>
+            <td>1995</td>
+            <td>North-East India</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="dot"></span>BSc BEd CBZ Program</div>
+        <table class="tbl">
+          <tr><th>Detail</th><th>Info</th></tr>
+          <tr><td>Full Form</td><td>Chemistry, Botany, Zoology</td></tr>
+          <tr><td>Duration</td><td>4 Years (integrated)</td></tr>
+          <tr><td>Degree</td><td>BSc + BEd (dual degree)</td></tr>
+          <tr><td>Seats per RIE</td><td>~30 (approx)</td></tr>
+          <tr><td>Eligibility</td><td>PCB stream, 12th pass</td></tr>
+          <tr><td>Fees</td><td>Very low (central govt funded)</td></tr>
+          <tr><td>Hostel</td><td>Available at all RIEs</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot orange"></span>Why RIE over other options?</div>
+        <div class="alert" style="margin-bottom:8px;">✅ Dual degree (BSc + BEd) in 4 years vs 5 years separately</div>
+        <div class="alert" style="margin-bottom:8px;">✅ NCERT-run — high credibility for KVS/NVS recruitment</div>
+        <div class="alert" style="margin-bottom:8px;">✅ CBZ gives Botany + Zoology at graduation → qualifies for PGT Biology</div>
+        <div class="alert orange">✅ Low fees + hostel = minimal financial burden on family</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUNSELLING -->
+  <div class="section" id="counselling">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Counselling Process</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">STEP 1</div>
+          <div class="tl-text"><strong style="color:#fff">NCET Result</strong> — NTA releases scorecard. Download and save.</div>
+        </div>
+        <div class="tl-item orange">
+          <div class="tl-date">STEP 2</div>
+          <div class="tl-text"><strong style="color:#fff">NCERT Counselling Portal Opens</strong> — Register on the official NCERT counselling website.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">STEP 3</div>
+          <div class="tl-text"><strong style="color:#fff">Choice Filling</strong> — Select RIE + program preferences in order of priority. You can fill multiple choices — allotment follows your rank and preference order.</div>
+        </div>
+        <div class="tl-item purple">
+          <div class="tl-date">STEP 4</div>
+          <div class="tl-text"><strong style="color:#fff">Seat Allotment</strong> — Based on rank, category, and choice order. Multiple rounds possible.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">STEP 5</div>
+          <div class="tl-text"><strong style="color:#fff">Document Verification</strong> — Visit allotted RIE with original documents.</div>
+        </div>
+        <div class="tl-item orange">
+          <div class="tl-date">STEP 6</div>
+          <div class="tl-text"><strong style="color:#fff">Fee Payment & Admission</strong> — Pay fees, confirm seat. Done! 🎉</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot orange"></span>Documents Required</div>
+      <div class="grid2">
+        <div>
+          <div class="tag green">Class 10 Marksheet</div>
+          <div class="tag green">Class 12 Marksheet</div>
+          <div class="tag green">Class 12 Certificate</div>
+          <div class="tag green">OBC Certificate (Non-Creamy Layer)</div>
+          <div class="tag green">Aadhar Card</div>
+        </div>
+        <div>
+          <div class="tag orange">NCET Scorecard</div>
+          <div class="tag orange">Passport Size Photos</div>
+          <div class="tag orange">Migration/TC from school</div>
+          <div class="tag orange">Medical Fitness Certificate</div>
+          <div class="tag orange">Character Certificate</div>
+        </div>
+      </div>
+      <div class="alert orange" style="margin-top:12px;">⚠️ If applying under OBC category, ensure your certificate is <strong>Non-Creamy Layer</strong> and issued within the last year.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot purple"></span>How to Decide Your RIE Preference Order</div>
+      <div class="alert" style="margin-bottom:8px;">📍 <strong>Proximity:</strong> Choose RIEs closer to your home state to reduce travel costs and homesickness.</div>
+      <div class="alert orange" style="margin-bottom:8px;">🏫 <strong>All RIEs are equal in degree value</strong> — the BSc BEd degree from any RIE has the same NCERT-backed credibility for KVS/NVS recruitment.</div>
+      <div class="alert purple">📋 <strong>Fill all 5 RIEs</strong> in your preference order — don't leave choices blank. More choices = better chances of getting a seat.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Backup — CUET UG Options</div>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <tr><th>University</th><th>Program</th><th>Priority</th></tr>
+          <tr><td>BHU (Banaras Hindu University)</td><td>BSc Biology / Life Sciences</td><td><span class="tag green">High</span></td></tr>
+          <tr><td>JNU</td><td>BSc Life Sciences</td><td><span class="tag green">High</span></td></tr>
+          <tr><td>BBAU Lucknow</td><td>Integrated BSc-MSc Biotech</td><td><span class="tag orange">Medium</span></td></tr>
+          <tr><td>University of Hyderabad</td><td>BSc Biological Sciences</td><td><span class="tag orange">Medium</span></td></tr>
+          <tr><td>CUSB (Central Univ South Bihar)</td><td>BSc BEd</td><td><span class="tag purple">Backup</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAREER PATH -->
+  <div class="section" id="career">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Career Roadmap after NCET → RIE</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-date">YEAR 1–4 (BSc BEd)</div>
+          <div class="tl-text"><strong style="color:#fff">BSc BEd CBZ / PCM — RIE or Central University</strong><br><span style="color:var(--muted)">4-year integrated program. Subject specialization + B.Ed simultaneously. Central govt funded, very low fees, hostel available.</span></div>
+        </div>
+        <div class="tl-item orange">
+          <div class="tl-date">YEAR 5–6 (MSc)</div>
+          <div class="tl-text"><strong style="color:#fff">MSc in relevant subject</strong><br><span style="color:var(--muted)">Options: MSc Botany / Zoology / Biotechnology / Life Sciences from any central university. Required for PGT-level teaching jobs.</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-date">YEAR 7+ (Job)</div>
+          <div class="tl-text"><strong style="color:#fff">KVS / NVS PGT Biology (or relevant subject)</strong><br><span style="color:var(--muted)">Central govt school teacher. Stable salary, pension, Level 8 pay (~₹47k starting). High vacancy window 2025–2035 due to retirements.</span></div>
+        </div>
+        <div class="tl-item purple">
+          <div class="tl-date">ALTERNATIVE</div>
+          <div class="tl-text"><strong style="color:#fff">State TGT/PGT · DSSSB · University Lecturer (NET/SET)</strong><br><span style="color:var(--muted)">BSc BEd + MSc opens multiple teaching pathways at state and central level.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="dot orange"></span>Why MSc Biotech qualifies for PGT Biology</div>
+        <div class="alert" style="margin-bottom:8px;">KVS/NVS PGT Biology requires: MSc in Botany / Zoology / Biology / Life Sciences / Biotechnology (with Botany + Zoology at graduation).</div>
+        <div class="alert orange">BSc CBZ (Chemistry, Botany, Zoology) ✅ satisfies the "Botany + Zoology at graduation" condition. So MSc Biotech on top of CBZ = fully eligible.</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="dot purple"></span>Other Career Options Post-BSc BEd</div>
+        <table class="tbl">
+          <tr><th>Path</th><th>Requirement</th></tr>
+          <tr><td>KVS/NVS PGT</td><td>MSc + BEd</td></tr>
+          <tr><td>State PGT</td><td>MSc + BEd (state TET)</td></tr>
+          <tr><td>TGT (9th–10th)</td><td>BSc BEd directly</td></tr>
+          <tr><td>University Lecturer</td><td>MSc + NET/SET</td></tr>
+          <tr><td>MSc Research</td><td>BSc BEd + entrance</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>KVS/NVS PGT Biology — Job Outlook</div>
+      <div class="grid3">
+        <div class="stat-box">
+          <div class="stat-label">Vacancy Window</div>
+          <div class="stat-value">2025–35</div>
+          <div class="stat-sub">Retirement-driven vacancies</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Job Security</div>
+          <div class="stat-value white">HIGH</div>
+          <div class="stat-sub">Central govt, pension</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Starting Pay</div>
+          <div class="stat-value orange">~₹47k</div>
+          <div class="stat-sub">Level 8, 7th Pay Commission</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function show(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+</script>
+</body>
+</html>
